@@ -1,3 +1,24 @@
+# Ignorar arquivos temporários do Python
+__pycache__/
+*.pyc
+*.db
+*.sqlite
+
+# Ignorar virtual environments
+venv/
+env/
+ENV/
+
+# Ignorar outputs e logs
+logs/
+output/
+results/
+*.log
+
+# Ignorar big data files
+data/*.csv
+data/*.xlsx
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

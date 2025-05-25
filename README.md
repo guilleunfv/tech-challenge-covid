@@ -1,78 +1,17 @@
-# tech-challenge-covid
+# Tech Challenge - Análise de Dados da PNAD COVID-19
 
----
+## Autores
+Guillermo Jesus Camahuali Privat  
+Kelly Priscilla Matos Campos  
+Rosicleia Cavalcante Mota
 
-## 📦 Archivos grandes con Git LFS
+## Visão Geral do Projeto
+Este projeto analisa os microdados da pesquisa PNAD COVID-19 do IBGE para os meses de Maio, Julho e Setembro de 2020...
 
-Este repositorio utiliza [Git LFS](https://git-lfs.github.com/) para manejar archivos `.csv` grandes provenientes de la base PNAD COVID-19.
-
-Asegúrate de tener Git LFS instalado antes de clonar o hacer pull del repositorio, usando los siguientes comandos:
-
-```bash
-git lfs install
-git clone https://github.com/guilleunfv/tech-challenge-covid.git
-
-Si no tienes Git LFS instalado, los archivos .csv no se descargarán correctamente.
-
-Los archivos grandes están ubicados en la carpeta:
-/data/raw/
-
-Incluyen:
-
-PNAD_COVID_052020.csv
-
-PNAD_COVID_072020.csv
-
-PNAD_COVID_092020.csv
-
-## ✅ PASO 3: Guarda el archivo
-
-Simplemente **guarda** los cambios en el editor.
-
----
-
-## ✅ PASO 4: Haz commit y push a GitHub
-
-Abre Git Bash en la carpeta del repositorio y ejecuta:
-
-```bash
-cd ~/OneDrive/Documentos/GitHub/tech-challenge-covid
-
-git add README.md
-git commit -m "Actualiza README con instrucciones de Git LFS"
-git push origin main
-
-
-git lfs install
-git clone https://github.com/guilleunfv/tech-challenge-covid.git
-
-Si no tienes Git LFS instalado, los archivos .csv no se descargarán correctamente.
-
-Los archivos grandes están ubicados en la carpeta:
-/data/raw/
-
-Incluyen:
-
-PNAD_COVID_052020.csv
-
-PNAD_COVID_072020.csv
-
-PNAD_COVID_092020.csv
-
-## ✅ PASO 3: Guarda el archivo
-
-Simplemente **guarda** los cambios en el editor.
-
----
-
-## ✅ PASO 4: Haz commit y push a GitHub
-
-Abre Git Bash en la carpeta del repositorio y ejecuta:
-
-```bash
-cd ~/OneDrive/Documentos/GitHub/tech-challenge-covid
-
-git add README.md
-git commit -m "Actualiza README con instrucciones de Git LFS"
-git push origin main
-
+## Estrutura do Repositório
+- **data/raw/**: Contém os arquivos CSV brutos da PNAD.
+- **data/dictionary/**: Dicionários oficiais das variáveis da pesquisa.
+- **notebooks/**: Contém o notebook com análise exploratória de dados (AED).
+- **scripts_sql/**: Scripts SQL para criar datasets e tabelas no BigQuery.
+- **app_streamlit/**: Aplicação interativa (opcional).
+- **imagens_relatorio/**: Gráficos estáticos para relatório ou README.
