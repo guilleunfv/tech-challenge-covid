@@ -1,8 +1,15 @@
-streamlit
-pandas
-google-cloud-bigquery
-google-auth
-matplotlib
-seaborn
-db-dtypes
-google-cloud-bigquery-storage
+streamlit==1.36.0
+
+google-cloud-bigquery==3.33.0
+google-cloud-bigquery-storage>=2.24
+
+pandas>=2.2,<3
+numpy>=2.0,<3
+
+# ► ¡no fijes exactamente! deja que pip elija ≥13
+pyarrow>=13.0.0
+
+db-dtypes==1.4.3
+
+matplotlib==3.9.0
+seaborn==0.13.2
