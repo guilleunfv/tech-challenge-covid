@@ -13,36 +13,45 @@ st.set_page_config(layout="wide", page_title="Dashboard PNAD COVID-19")
 # --- Autenticação e Carregamento de Dados ---
 
 @st.cache_resource # Cacheia o recurso (cliente BigQuery)
+# EN connect_to_bigquery():
 def connect_to_bigquery():
     """Conecta-se ao BigQuery usando credenciais do Streamlit Secrets ou arquivo local."""
     try:
         # Tenta carregar do Streamlit Secrets (para deploy)
-        # key_dict_str = st.secrets["gcp_service_account_key"] # Ya no es un string
-        # key_dict = json.loads(key_dict_str)                 try:
-        # Tenta carregar do Streamlit Secrets (para deploy)
-        # Quando se usa formato TOML nos secrets, Streamlit já parseia e entrega um objeto tipo dict
         key_info_dict = st.secrets["gcp_service_account_key"] # Directamente es un objeto similar a un diccionario
         
         # Convertir AttrDict a un diccionario estándar si es necesario para from_service_account_info
-        # Esto es a menudo una buena práctica para asegurar compatibilidad.
         if not isinstance(key_info_dict, dict):
             key_info_dict = dict(key_info_dict)
 
         credentials = service_account.Credentials.from_service_account_info(key_info_dict)
         st.sidebar.success("Autenticado via Streamlit Secrets.")
-    # ... resto del try-except ...
-            except Exception as e:
-                st.sidebar.error(f"Erro ao carregar chave local: {e}")
+    
+    except FileNotFoundError: # st.secrets não encontrado (provavelmente local)
+        # Tenta carregar de um arquivo JSON local (para desenvolvimento local)
+        local_key_path = "gcp_service_account_key.json"
+        if os.path.exists(local_key_path):
+            try:
+                with open(local_key_path, 'r') as f:
+                    key_dict_local_json = json.load(f) # Aquí sí cargamos un JSON de archivo
+                credentials = service_account.Credentials.from_service_account_info(key_dict_local_json)
+                st.sidebar.info("Autenticado via arquivo JSON local.")
+            except Exception as e_local_file: # Renombrar la variable de excepción
+                st.sidebar.error(f"Erro ao carregar chave local: {e_local_file}")
                 st.stop()
         else:
             st.sidebar.error("Credenciais GCP não encontradas (nem st.secrets, nem gcp_service_account_key.json).")
             st.error("Erro de Autenticação: Verifique as credenciais do GCP.")
-            st.stop() # Interrompe a execução se não houver credenciais
-    except Exception as e: # Outros erros ao carregar do st.secrets
+            st.stop() 
+    
+    except Exception as e: # Este es el 'except' que estaba causando el IndentationError
         st.sidebar.error(f"Erro ao carregar credenciais do st.secrets: {e}")
         st.error("Erro de Autenticação: Verifique as credenciais do GCP no Streamlit Cloud.")
         st.stop()
 
+    # Esta parte debe estar fuera de los bloques try/except si la autenticación fue exitosa dentro de ellos
+    # O, si `credentials` se define dentro de los try/except, asegurarse de que siempre se defina o manejar el caso contrario.
+    # Asumiendo que 'credentials' se define correctamente si no hay error:
     client = bigquery.Client(project='tech-chalenge-covid', credentials=credentials)
     return client
 
