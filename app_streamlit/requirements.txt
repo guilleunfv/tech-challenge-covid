@@ -4,4 +4,4 @@ google-cloud-bigquery
 google-auth
 matplotlib
 seaborn
-# plotly # Removido pois os gráficos do notebook são matplotlib/seaborn
+db-dtypes
