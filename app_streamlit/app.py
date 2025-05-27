@@ -17,19 +17,20 @@ def connect_to_bigquery():
     """Conecta-se ao BigQuery usando credenciais do Streamlit Secrets ou arquivo local."""
     try:
         # Tenta carregar do Streamlit Secrets (para deploy)
-        key_dict_str = st.secrets["gcp_service_account_key"]
-        key_dict = json.loads(key_dict_str)
-        credentials = service_account.Credentials.from_service_account_info(key_dict)
+        # key_dict_str = st.secrets["gcp_service_account_key"] # Ya no es un string
+        # key_dict = json.loads(key_dict_str)                 try:
+        # Tenta carregar do Streamlit Secrets (para deploy)
+        # Quando se usa formato TOML nos secrets, Streamlit já parseia e entrega um objeto tipo dict
+        key_info_dict = st.secrets["gcp_service_account_key"] # Directamente es un objeto similar a un diccionario
+        
+        # Convertir AttrDict a un diccionario estándar si es necesario para from_service_account_info
+        # Esto es a menudo una buena práctica para asegurar compatibilidad.
+        if not isinstance(key_info_dict, dict):
+            key_info_dict = dict(key_info_dict)
+
+        credentials = service_account.Credentials.from_service_account_info(key_info_dict)
         st.sidebar.success("Autenticado via Streamlit Secrets.")
-    except FileNotFoundError: # st.secrets não encontrado (provavelmente local)
-        # Tenta carregar de um arquivo JSON local (para desenvolvimento local)
-        local_key_path = "gcp_service_account_key.json" # Nome esperado do arquivo na raiz
-        if os.path.exists(local_key_path):
-            try:
-                with open(local_key_path, 'r') as f:
-                    key_dict = json.load(f)
-                credentials = service_account.Credentials.from_service_account_info(key_dict)
-                st.sidebar.info("Autenticado via arquivo JSON local.")
+    # ... resto del try-except ...
             except Exception as e:
                 st.sidebar.error(f"Erro ao carregar chave local: {e}")
                 st.stop()
